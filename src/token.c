@@ -6,8 +6,8 @@ void ctk_token_init(ctk_token_t *tok, int kind, ctk_textsrc_t *src,
                     ctk_textpos_t *pos, ctk_strspan_t *lexeme) {
     tok->kind = kind;
     tok->src = src;
-    ctk_textpos_copy(&tok->pos, pos);
-    ctk_strspan_copy(&tok->lexeme, lexeme);
+    tok->pos = *pos;
+    tok->lexeme = *lexeme;
 }
 
 void ctk_token_write(ctk_token_t *tok, FILE *file) {

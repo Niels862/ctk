@@ -12,8 +12,6 @@ void ctk_strspan_init(ctk_strspan_t *span, char *start, char *end);
 
 void ctk_strspan_init_from_string(ctk_strspan_t *span, char *zs);
 
-void ctk_strspan_copy(ctk_strspan_t *dst, ctk_strspan_t *src);
-
 void ctk_strspan_write_repr(ctk_strspan_t *span, FILE *file);
 
 #endif

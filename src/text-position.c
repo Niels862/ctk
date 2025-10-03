@@ -5,8 +5,11 @@ void ctk_textpos_init(ctk_textpos_t *pos) {
     pos->col = 1;
 }
 
-void ctk_textpos_copy(ctk_textpos_t *dst, 
-                      ctk_textpos_t *src) {
-    dst->line = src->line;
-    dst->col = src->col;
+void ctk_textpos_next(ctk_textpos_t *pos, bool newline) {
+    if (newline) {
+        pos->line++;
+        pos->col = 1;
+    } else {
+        pos->col++;
+    }
 }
