@@ -26,14 +26,12 @@ static ctk_rtti_t node_base_rtti = {
     .name = "node-base",
 };
 
-static ctk_rtti_attr_t node_expr_rtti_attrs[] = {
-    CTK_RTTI_ATTR(node_expr_t, type, CTK_TYPE_INVALID)
-};
-
 static ctk_rtti_t node_expr_rtti = {
     .super = &node_base_rtti,
     .name = "node-expr",
-    .attrs = CTK_RTTI_ATTR_LIST(node_expr_rtti_attrs),
+    .attrs = CTK_RTTI_ATTR_LIST(
+        CTK_RTTI_ATTR(node_expr_t, type, CTK_TYPE_INVALID)
+    ),
 };
 
 static ctk_rtti_t node_stmt_rtti = {
@@ -41,14 +39,12 @@ static ctk_rtti_t node_stmt_rtti = {
     .name = "node-stmt",
 };
 
-static ctk_rtti_attr_t node_intlit_rtti_attrs[] = {
-    CTK_RTTI_ATTR(node_intlit_t, lit, CTK_TYPE_I64),
-};
-
 static ctk_rtti_t node_intlit_rtti = {
     .super = &node_expr_rtti,
     .name = "node-intlit",
-    .attrs = CTK_RTTI_ATTR_LIST(node_intlit_rtti_attrs)
+    .attrs = CTK_RTTI_ATTR_LIST(
+        CTK_RTTI_ATTR(node_intlit_t, lit, CTK_TYPE_I64)
+    )
 };
 
 static void base_init(node_base_t *base, ctk_rtti_t *meta) {

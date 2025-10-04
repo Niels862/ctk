@@ -46,7 +46,10 @@ static size_t ctk_rtti_total_n_attrs(ctk_rtti_t *meta) {
     size_t n = 0; 
 
     while (meta != NULL) {
-        n += meta->attrs.n;
+        for (size_t i = 0; meta->attrs[i].offset > 0; i++) {
+            n++;
+        }
+
         meta = meta->super;
     }
 
@@ -63,8 +66,8 @@ void ctk_rtti_write(void *obj, size_t depth, FILE *file) {
 
     size_t j = 0;
     while (meta != NULL) {        
-        for (size_t i = 0; i < meta->attrs.n; i++, j++) {
-            ctk_rtti_attr_t *attr = &meta->attrs.list[i];
+        for (size_t i = 0; meta->attrs[i].offset > 0; i++, j++) {
+            ctk_rtti_attr_t *attr = &meta->attrs[i];
 
             ctk_n_spaces(depth + 1, file);
             fprintf(file, "%s: ", attr->name);
