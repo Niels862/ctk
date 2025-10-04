@@ -2,42 +2,48 @@
 #include <string.h>
 #include <ctype.h>
 
-#define TOKENLIST(X) \
+#define TOKENLIST_OTHER(X) \
     X(NONE,         "none"), \
     X(IDENTIFIER,   "identifier"), \
     X(INTEGER,      "integer"), \
-    X(IF,           "if"), \
-    X(WHILE,        "while"), \
-    X(FOR,          "for"), \
-    X(PLUS,         "+"), \
-    X(MINUS,        "-"), \
-    X(RSHIFT,       ">>"), \
     X(ENDOFSOURCE,  "end-of-source"), \
     X(UNRECOGNIZED, "unrecognized")
+
+#define TOKENLIST_KEYWORDS(X) \
+    X(IF,           "if"), \
+    X(WHILE,        "while"), \
+    X(FOR,          "for") \
+
+#define TOKENLIST_OPERATORS(X) \
+    X(PLUS,         "+"), \
+    X(MINUS,        "-"), \
+    X(RSHIFT,       ">>") \
 
 #define X_EXPAND_ENUM(e, s) e
 
 typedef enum {
-    TOKENLIST(X_EXPAND_ENUM)
+    TOKENLIST_OTHER(X_EXPAND_ENUM),
+    TOKENLIST_KEYWORDS(X_EXPAND_ENUM),
+    TOKENLIST_OPERATORS(X_EXPAND_ENUM),
 } tokenkind_t;
 
 #define X_EXPAND_NAMES(e, s) [e] = s
 
 static char *names[] = {
-    TOKENLIST(X_EXPAND_NAMES)
+    TOKENLIST_OTHER(X_EXPAND_NAMES),
+    TOKENLIST_KEYWORDS(X_EXPAND_NAMES),
+    TOKENLIST_OPERATORS(X_EXPAND_NAMES),
 };
 
+#define X_EXPAND_FIXED(e, s) { s, e }
+
 static ctk_fixed_lexeme_t keywords[] = {
-    { "if",     IF },
-    { "while",  WHILE },
-    { "for",    FOR },
+    TOKENLIST_KEYWORDS(X_EXPAND_FIXED),
     { 0 },
 };
 
 static ctk_fixed_lexeme_t operators[] = {
-    { "+",      PLUS },
-    { "-",      MINUS },
-    { ">>",     RSHIFT },
+    TOKENLIST_OPERATORS(X_EXPAND_FIXED),
     { 0 },
 };
 
@@ -68,12 +74,24 @@ static void lex(ctk_lexer_t *lexer) {
 
             ctk_lexer_emit(lexer, &tok, IDENTIFIER);
         } else if (isoperator(*c)) {
+            ctk_lexer_state_t state;
+            tokenkind_t kind = UNRECOGNIZED;
+
             do {
                 ctk_lexer_advance(lexer);
+                
+                tokenkind_t lkind = ctk_lexer_lookup(lexer, operators);
+                if (lkind != NONE) {
+                    ctk_lexer_save_state(lexer, &state);
+                    kind = lkind;
+                }
             } while (isoperator(*c));
 
-            tokenkind_t kind = ctk_lexer_lookup(lexer, operators);
-            ctk_lexer_emit(lexer, &tok, kind == NONE ? UNRECOGNIZED : kind);
+            if (kind != UNRECOGNIZED) {
+                ctk_lexer_restore_state(lexer, &state);
+            }
+            
+            ctk_lexer_emit(lexer, &tok, kind);
         } else if (iswhitespace(*c)) {
             do {
                 ctk_lexer_advance(lexer);
