@@ -1,7 +1,7 @@
 #ifndef CTK_TEXT_DECODER_H
 #define CTK_TEXT_DECODER_H
 
-#include "string-buffer.h"
+#include "ctk/string-buffer.h"
 #include <stdint.h>
 
 typedef enum {

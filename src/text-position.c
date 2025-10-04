@@ -1,4 +1,4 @@
-#include "text-position.h"
+#include "ctk/text-position.h"
 
 void ctk_textpos_init(ctk_textpos_t *pos) {
     pos->line = 1;

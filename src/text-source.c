@@ -1,5 +1,5 @@
-#include "text-source.h"
-#include "string.h"
+#include "ctk/text-source.h"
+#include <string.h>
 
 void ctk_textsrc_init_text(ctk_textsrc_t *ts, ctk_zstr_t name, 
                            ctk_zstr_t text) {

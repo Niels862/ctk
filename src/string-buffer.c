@@ -1,5 +1,5 @@
-#include "string-buffer.h"
-#include "alloc.h"
+#include "ctk/string-buffer.h"
+#include "ctk/alloc.h"
 #include <string.h>
 #include <assert.h>
 

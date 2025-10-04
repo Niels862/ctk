@@ -1,5 +1,5 @@
-#include "token.h"
-#include "text-source.h"
+#include "ctk/token.h"
+#include "ctk/text-source.h"
 
 int main() {
     ctk_textsrc_t src;

@@ -3,9 +3,6 @@
 
 #include <stddef.h>
 
-/* Does not assume strings are zero-terminated. 
- * 
- */
 typedef struct {
     char *data;
     size_t size;

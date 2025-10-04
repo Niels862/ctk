@@ -1,4 +1,4 @@
-#include "token.h"
+#include "ctk/token.h"
 
 static char **ctk_token_names = NULL;
 

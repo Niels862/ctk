@@ -1,9 +1,9 @@
 #ifndef CTK_TOKEN_H
 #define CTK_TOKEN_H
 
-#include "text-position.h"
-#include "text-source.h"
-#include "string-span.h"
+#include "ctk/text-position.h"
+#include "ctk/text-source.h"
+#include "ctk/string-span.h"
 #include <stdio.h>
 
 typedef struct {

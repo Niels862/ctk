@@ -1,9 +1,9 @@
 #ifndef CTK_LEXER_H
 #define CTK_LEXER_H
 
-#include "token.h"
-#include "text-source.h"
-#include "text-decoder.h"
+#include "ctk/token.h"
+#include "ctk/text-source.h"
+#include "ctk/text-decoder.h"
 #include <stdint.h>
 
 typedef struct {

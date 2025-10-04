@@ -1,8 +1,8 @@
 #ifndef CTK_TEXT_SOURCE_H
 #define CTK_TEXT_SOURCE_H
 
-#include "string-buffer.h"
-#include "string-utils.h"
+#include "ctk/string-buffer.h"
+#include "ctk/string-utils.h"
 #include <stddef.h>
 
 typedef struct {

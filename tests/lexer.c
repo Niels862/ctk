@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "ctk/lexer.h"
 #include <string.h>
 #include <ctype.h>
 
@@ -79,7 +79,7 @@ static void lex(ctk_lexer_t *lexer) {
 
             do {
                 ctk_lexer_advance(lexer);
-                
+
                 tokenkind_t lkind = ctk_lexer_lookup(lexer, operators);
                 if (lkind != NONE) {
                     ctk_lexer_save_state(lexer, &state);
