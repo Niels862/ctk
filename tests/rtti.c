@@ -35,9 +35,14 @@ static ctk_rtti_t node_stmt_rtti = {
     .name = "node-stmt",
 };
 
+static ctk_rtti_attr_t node_intlit_rtti_attrs[] = {
+    CTK_RTTI_ATTR(node_intlit_t, lit, CTK_TYPE_INVALID),
+};
+
 static ctk_rtti_t node_intlit_rtti = {
     .super = &node_expr_rtti,
     .name = "node-intlit",
+    .attrs = CTK_RTTI_ATTR_LIST(node_intlit_rtti_attrs)
 };
 
 static void base_init(node_base_t *base, ctk_rtti_t *meta) {

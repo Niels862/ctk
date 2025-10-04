@@ -18,11 +18,19 @@ typedef struct {
 
 #define CTK_RTTI_ATTR(s, a, t) { #a, t, offsetof(s, a) }
 
+typedef struct {
+    ctk_rtti_attr_t *attrs;
+    size_t n;
+} ctk_rtti_attrlist_t;
+
+#define CTK_RTTI_ATTR_LIST(as) { as, sizeof(as) / sizeof(*as) }
+
 typedef struct ctk_rtti_t ctk_rtti_t;
 
 struct ctk_rtti_t {
     ctk_rtti_t *super;
     ctk_zstr_t name;
+    ctk_rtti_attrlist_t attrs;
 };
 
 #define CTK_RTTI_META(p) ((ctk_rtti_t *)(p))
