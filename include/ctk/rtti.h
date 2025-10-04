@@ -2,12 +2,17 @@
 #define CTK_RTTI_H
 
 #include "ctk/string-utils.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdbool.h>
 
 typedef enum {
     CTK_TYPE_INVALID,
     CTK_TYPE_RTTI,
+
+    CTK_TYPE_I64,
+    CTK_TYPE_BOOL,
+    CTK_TYPE_ZSTR,
 } ctk_rtti_type_t;
 
 typedef struct {
@@ -19,7 +24,7 @@ typedef struct {
 #define CTK_RTTI_ATTR(s, a, t) { #a, t, offsetof(s, a) }
 
 typedef struct {
-    ctk_rtti_attr_t *attrs;
+    ctk_rtti_attr_t *list;
     size_t n;
 } ctk_rtti_attrlist_t;
 
@@ -33,7 +38,7 @@ struct ctk_rtti_t {
     ctk_rtti_attrlist_t attrs;
 };
 
-#define CTK_RTTI_META(p) ((ctk_rtti_t *)(p))
+#define CTK_RTTI_META(p) (*(ctk_rtti_t **)(p))
 
 extern ctk_rtti_t ctk_rtti_base;
 
@@ -42,6 +47,8 @@ void ctk_rtti_delete(void *obj);
 bool ctk_rtti_instanceof(void *obj, ctk_rtti_t *meta);
 
 void *ctk_rtti_dyncast(void *obj, ctk_rtti_t *meta);
+
+void ctk_rtti_write(void *obj, size_t depth, FILE *file);
 
 #define CTK_RTTI_TYPENAME(pre, t) pre##_##t##_t
 
