@@ -58,6 +58,6 @@ $(TEST_BUILD)/%: $(TEST_BUILD)/%.o $(LIB_NAME)
 	$(CC) $(CCFLAGS) $< -L. -lctk -o $@
 
 clean:
-	rm -rf $(BUILD_DIR) $(EXEC)
+	rm -rf $(BUILD_DIR) $(LIB_NAME)
 
 -include $(DEPS)
