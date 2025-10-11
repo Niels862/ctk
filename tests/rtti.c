@@ -1,5 +1,5 @@
 #include "ctk/rtti.h"
-#include "ctk/alloc.h"
+#include "ctk/allocator.h"
 #include <stdio.h>
 #include <stdint.h>
 
@@ -77,7 +77,7 @@ CTK_RTTI_DEFN(node, expr)
 CTK_RTTI_DEFN(node, stmt)
 CTK_RTTI_DEFN(node, intlit)
 
-int main() {
+int main(void) {
     node_intlit_t *intlit = intlit_new(42);
 
     bool isexpr = node_expr_instanceof(intlit);

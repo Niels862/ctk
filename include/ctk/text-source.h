@@ -11,7 +11,7 @@ typedef struct {
 } ctk_textsrc_t;
 
 void ctk_textsrc_init_text(ctk_textsrc_t *ts, ctk_zstr_t name, 
-                           ctk_zstr_t s);
+                           ctk_zstr_t text);
 
 void ctk_textsrc_destruct(ctk_textsrc_t *ts);
 

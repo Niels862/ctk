@@ -1,5 +1,5 @@
 #include "ctk/rtti.h"
-#include "ctk/alloc.h"
+#include "ctk/allocator.h"
 #include <stdint.h>
 
 ctk_rtti_t ctk_rtti_base = {
@@ -11,7 +11,9 @@ void ctk_rtti_delete(void *obj) {
     ctk_rtti_t *meta = CTK_RTTI_META(obj);
     (void)meta;
 
-    free(obj);
+    // FIXME: call type destructors
+
+    ctk_xfree(&obj);
 }
 
 bool ctk_rtti_instanceof(void *obj, ctk_rtti_t *meta) {

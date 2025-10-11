@@ -1,5 +1,5 @@
 #include "ctk/string-buffer.h"
-#include "ctk/alloc.h"
+#include "ctk/allocator.h"
 #include <string.h>
 #include <assert.h>
 
@@ -9,7 +9,7 @@ static void ctk_strbuf_realloc(ctk_strbuf_t *sb, size_t min) {
             sb->cap *= 2;
         }
 
-        sb->data = ctk_xrealloc(sb->data, sb->cap);
+        ctk_xrealloc(&sb->data, sb->cap);
     }
 }
 
@@ -22,7 +22,7 @@ void ctk_strbuf_init(ctk_strbuf_t *sb, size_t cap) {
 }
 
 void ctk_strbuf_destruct(ctk_strbuf_t *sb) {
-    free(sb->data);
+    ctk_xfree(&sb->data);
 }
 
 void ctk_strbuf_concat_str(ctk_strbuf_t *sb, char *s, size_t len) {

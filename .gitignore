@@ -1,3 +1,4 @@
 build/
 libctk.a
 .vscode/
+.idea/

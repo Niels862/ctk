@@ -1,5 +1,4 @@
 #include "ctk/lexer.h"
-#include <string.h>
 #include <ctype.h>
 
 #define TOKENLIST_OTHER(X) \
@@ -114,7 +113,7 @@ static void lex(ctk_lexer_t *lexer) {
     fprintf(stderr, "\n");
 }
 
-int main() {
+int main(void) {
     char *text = "abc 123 for +$-->> > a12\n while1 a1\n";
 
     ctk_textsrc_t src;

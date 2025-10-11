@@ -1,7 +1,7 @@
 #include "ctk/token.h"
 #include "ctk/text-source.h"
 
-int main() {
+int main(void) {
     ctk_textsrc_t src;
     ctk_textsrc_init_text(&src, "<test>", "test");
 

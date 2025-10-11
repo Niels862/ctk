@@ -1,5 +1,5 @@
 #include "ctk/string-utils.h"
-#include "ctk/alloc.h"
+#include "ctk/allocator.h"
 #include <string.h>
 
 ctk_zstr_t ctk_strdup(ctk_zstr_t s) {

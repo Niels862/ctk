@@ -14,10 +14,8 @@ void ctk_strspan_init_from_string(ctk_strspan_t *span, char *zs) {
 }
 
 static void ctk_char_write_repr(char c, FILE *file) {
-    if (isprint(c)) {
+    if (isprint(c) && c != '\t') {
         fprintf(file, "%c", c);
-    } else if (c < 10) {
-        fprintf(file, "\\%d", c);
     } else {
         char *seq = NULL;
 
@@ -27,10 +25,15 @@ static void ctk_char_write_repr(char c, FILE *file) {
             case '\t':  seq = "\\t";    break;
             case '\\':  seq = "\\\\";   break;
             case '\"':  seq = "\\\"";   break;
+            default: break;
         }
 
         if (seq == NULL) {
-            fprintf(file, "\\%02X", c);
+            if (c < 10) {
+                fprintf(file, "\\%d", c);
+            } else {
+                fprintf(file, "\\%02X", c);
+            }
         } else {
             fputs(seq, file);
         }
