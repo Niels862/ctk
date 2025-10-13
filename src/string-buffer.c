@@ -33,3 +33,19 @@ void ctk_strbuf_concat_str(ctk_strbuf_t *sb, char *s, size_t len) {
     memcpy(sb->data + sb->size, s, len);
     sb->size += len;
 }
+
+void ctk_strbuf_concat_file(ctk_strbuf_t *sb, FILE *file) {
+    size_t readsize = 256;
+    ctk_strbuf_realloc(sb, sb->size + readsize);
+
+    size_t nread;
+    while ((nread = fread(sb->data + sb->size, 1, readsize, file)) > 0) {
+        sb->size += nread;
+        readsize *= 2;
+        ctk_strbuf_realloc(sb, sb->size + readsize);
+    }
+}
+
+void ctk_strbuf_to_span(ctk_strbuf_t *sb, ctk_strspan_t *span) {
+    ctk_strspan_init(span, sb->data, sb->data + sb->size);
+}
