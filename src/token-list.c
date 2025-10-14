@@ -16,7 +16,7 @@ void ctk_tokenlist_destruct(ctk_tokenlist_t *toks) {
 }
 
 void ctk_tokenlist_add(ctk_tokenlist_t *toks, ctk_token_t *tok) {
-    if (toks->size + 1 <= toks->cap) {
+    if (toks->size + 1 >= toks->cap) {
         toks->cap *= 2;
         ctk_xrealloc(&toks->data, toks->cap * sizeof(ctk_token_t));
     }
