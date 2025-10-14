@@ -7,7 +7,7 @@ void *ctk_xmalloc(size_t size) {
     void *p = malloc(size);
 
     if (p == NULL) {
-        fprintf(stderr, "malloc(%zu) failed", size);
+        fprintf(stderr, "malloc(%zu) failed.\n", size);
         abort();
     }
 
@@ -18,7 +18,7 @@ void *ctk_xcalloc(size_t size) {
     void *p = calloc(1, size);
 
     if (p == NULL) {
-        fprintf(stderr, "calloc(%zu) failed", size);
+        fprintf(stderr, "calloc(%zu) failed.\n", size);
         abort();
     }
 
@@ -34,7 +34,7 @@ void ctk_xrealloc(void *pp, size_t size) {
     void *p = realloc(*vpp, size);
 
     if (p == NULL) {
-        fprintf(stderr, "realloc(-, %zu) failed", size);
+        fprintf(stderr, "realloc(-, %zu) failed.\n", size);
         abort();
     }
 
