@@ -22,6 +22,7 @@ void ctk_tokenlist_add(ctk_tokenlist_t *toks, ctk_token_t *tok) {
     }
 
     toks->data[toks->size] = *tok;
+    toks->size++;
 }
 
 void ctk_tokenlist_lock(ctk_tokenlist_t *toks) {
