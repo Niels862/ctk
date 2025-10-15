@@ -47,6 +47,12 @@ static ctk_rtti_t node_intlit_rtti = {
     )
 };
 
+/* Would be in file.h */
+CTK_RTTI_DECL(node, base)
+CTK_RTTI_DECL(node, expr)
+CTK_RTTI_DECL(node, stmt)
+CTK_RTTI_DECL(node, intlit)
+
 static void base_init(node_base_t *base, ctk_rtti_t *meta) {
     base->meta = meta;
 }
@@ -64,12 +70,6 @@ static node_intlit_t *intlit_new(int64_t lit) {
 
     return node;
 }
-
-/* Would be in file.h */
-CTK_RTTI_DECL(node, base)
-CTK_RTTI_DECL(node, expr)
-CTK_RTTI_DECL(node, stmt)
-CTK_RTTI_DECL(node, intlit)
 
 /* Would be in file.c */
 CTK_RTTI_DEFN(node, base)
