@@ -1,6 +1,7 @@
 #ifndef CTK_RTTI_H
 #define CTK_RTTI_H
 
+#include "ctk/allocator.h"
 #include "ctk/string-utils.h"
 #include <stdio.h>
 #include <stddef.h>
@@ -55,13 +56,15 @@ void ctk_rtti_write(void *obj, size_t depth, FILE *file);
 
 #define CTK_RTTI_DECL(pre, t) \
     bool pre##_##t##_instanceof(void *obj); \
-    CTK_RTTI_TYPENAME(pre, t) *pre##_##t##_dyncast(void *obj);
-
+    CTK_RTTI_TYPENAME(pre, t) *pre##_##t##_dyncast(void *obj); \
+    CTK_RTTI_TYPENAME(pre, t) *pre##_##t##_xalloc(void);
 
 #define CTK_RTTI_DEFN(pre, t) \
     bool pre##_##t##_instanceof(void *obj) \
         { return ctk_rtti_instanceof(obj, &CTK_RTTI_METANAME(pre, t)); } \
     CTK_RTTI_TYPENAME(pre, t) *pre##_##t##_dyncast(void *obj) \
-        { return ctk_rtti_dyncast(obj, &CTK_RTTI_METANAME(pre, t)); }
+        { return ctk_rtti_dyncast(obj, &CTK_RTTI_METANAME(pre, t)); } \
+    CTK_RTTI_TYPENAME(pre, t) *pre##_##t##_xalloc(void) \
+        { return ctk_xmalloc(sizeof(CTK_RTTI_TYPENAME(pre, t))); }
 
 #endif

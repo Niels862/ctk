@@ -57,7 +57,7 @@ static void expr_init(node_expr_t *expr, ctk_rtti_t *meta) {
 }
 
 static node_intlit_t *intlit_new(int64_t lit) {
-    node_intlit_t *node = ctk_xmalloc(sizeof(node_intlit_t));
+    node_intlit_t *node = node_intlit_xalloc();
 
     expr_init(&node->expr, &node_intlit_rtti);
     node->lit = lit;
