@@ -82,7 +82,7 @@ void ctk_rtti_write(void *obj, size_t depth, FILE *file) {
                     break;
 
                 case CTK_TYPE_RTTI:
-                    ctk_rtti_write(vp, depth + 1, file);
+                    ctk_rtti_write(*(void **)vp, depth + 1, file);
                     fprintf(file, "\n");
                     break;
 
