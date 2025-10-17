@@ -13,7 +13,9 @@
 
 typedef enum {
     CTK_TYPE_INVALID,
+
     CTK_TYPE_RTTI,
+    CTK_TYPE_RTTI_LIST,
 
     CTK_TYPE_I64,
     CTK_TYPE_BOOL,
@@ -43,6 +45,8 @@ struct ctk_rtti_t {
 extern ctk_rtti_t ctk_rtti_base;
 
 void ctk_rtti_delete(void *obj);
+
+void ctk_rtti_list_delete(void **list);
 
 bool ctk_rtti_instanceof(void *obj, ctk_rtti_t *meta);
 
