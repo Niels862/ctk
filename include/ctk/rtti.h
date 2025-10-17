@@ -3,6 +3,7 @@
 
 #include "ctk/allocator.h"
 #include "ctk/string-utils.h"
+#include "ctk/token.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -16,6 +17,8 @@ typedef enum {
 
     CTK_TYPE_RTTI,
     CTK_TYPE_RTTI_LIST,
+
+    CTK_TYPE_TOKEN,
 
     CTK_TYPE_I64,
     CTK_TYPE_BOOL,

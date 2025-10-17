@@ -118,6 +118,13 @@ static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr, size_t depth, 
             break;
         }
 
+        case CTK_TYPE_TOKEN: {
+            ctk_token_t *token = ctk_get_pointer_attr(obj, attr->offset);
+            ctk_token_short_write(token, file);
+            fprintf(file, "\n");
+            break;
+        }
+
         case CTK_TYPE_I64: {
             int64_t i64 = *(int64_t *)ctk_get_static_attr(obj, attr->offset);
             fprintf(file, "%ld\n", i64);

@@ -27,6 +27,12 @@ void ctk_token_write_with_names(ctk_token_t *tok, char *names[], FILE *file) {
     ctk_strspan_write_repr(&tok->lexeme, file);
 }
 
+void ctk_token_short_write(ctk_token_t *tok, FILE *file) {
+    fprintf(file, "%s:%d:%d: ", 
+            tok->src->name, tok->pos.line, tok->pos.col);
+    ctk_strspan_write_repr(&tok->lexeme, file);
+}
+
 void ctk_tokenkind_set_name_table(char *names[]) {
     ctk_token_names = names;
 }
