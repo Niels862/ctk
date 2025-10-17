@@ -1,4 +1,4 @@
-#ifndef CTK_SPAN_h
+#ifndef CTK_SPAN_H
 #define CTK_SPAN_H
 
 typedef struct {
