@@ -22,4 +22,6 @@ void ctk_token_write_with_names(ctk_token_t *tok, char *names[], FILE *file);
 
 void ctk_tokenkind_set_name_table(char **names);
 
+char *ctk_tokenkind_get_name(int kind);
+
 #endif
