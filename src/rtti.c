@@ -87,19 +87,19 @@ static void ctk_n_spaces(size_t n, FILE *file) {
     }
 }
 
-static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr, size_t depth, FILE *file) {
+static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr, 
+                                size_t depth, FILE *file) {
     ctk_n_spaces(depth + 1, file);
     fprintf(file, "%s: ", attr->name);
 
     switch (attr->type) {
         case CTK_TYPE_INVALID:  
-            fprintf(file, "<invalid>\n");
+            fprintf(file, "<invalid>");
             break;
 
         case CTK_TYPE_RTTI: {
             void *subobj = ctk_get_pointer_attr(obj, attr->offset);
             ctk_rtti_write(subobj, depth + 1, file);
-            fprintf(file, "\n");
             break;
         }
 
@@ -111,35 +111,35 @@ static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr, size_t depth, 
                 ctk_n_spaces(depth + 2, file);
                 fprintf(file, "[%ld]: ", i);
                 ctk_rtti_write(list[i], depth + 2, file);
+                fprintf(file, "\n");
             }
 
             ctk_n_spaces(depth + 1, file);
-            fprintf(file, "]\n");
+            fprintf(file, "]");
             break;
         }
 
         case CTK_TYPE_TOKEN: {
             ctk_token_t *token = ctk_get_pointer_attr(obj, attr->offset);
             ctk_token_short_write(token, file);
-            fprintf(file, "\n");
             break;
         }
 
         case CTK_TYPE_I64: {
             int64_t i64 = *(int64_t *)ctk_get_static_attr(obj, attr->offset);
-            fprintf(file, "%ld\n", i64);
+            fprintf(file, "%ld", i64);
             break;
         }
 
         case CTK_TYPE_BOOL: {
             bool b = *(bool *)ctk_get_static_attr(obj, attr->offset);
-            fprintf(file, "%s\n", b ? "true" : "false");
+            fprintf(file, "%s", b ? "true" : "false");
             break;
         }
 
         case CTK_TYPE_ZSTR: {
             ctk_zstr_t zstr = ctk_get_pointer_attr(obj, attr->offset);
-            fprintf(file, "%s\n", zstr);
+            fprintf(file, "%s", zstr);
             break;
         }
     }
@@ -148,11 +148,13 @@ static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr, size_t depth, 
 void ctk_rtti_write(void *obj, size_t depth, FILE *file) {
     ctk_rtti_t *meta = CTK_RTTI_META(obj);
 
-    fprintf(file, "%s\n", meta->name);
+    fprintf(file, "%s", meta->name);
 
     size_t j = 0;
-    while (meta != NULL) {        
+    while (meta != NULL) { 
         for (size_t i = 0; meta->attrs[i].offset > 0; i++, j++) {
+            fprintf(file, "\n");
+            
             ctk_rtti_attr_t *attr = &meta->attrs[i];
             ctk_rtti_attr_write(obj, attr, depth, file);
         }

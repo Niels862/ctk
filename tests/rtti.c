@@ -27,6 +27,11 @@ typedef struct {
     void **entries;
 } node_list_t;
 
+typedef struct {
+    node_stmt_t stmt;
+    node_expr_t *expr;
+} node_return_t;
+
 static ctk_rtti_t node_base_rtti = {
     .super = &ctk_rtti_base,
     .name = "node-base",
@@ -61,12 +66,21 @@ static ctk_rtti_t node_list_rtti = {
     )
 };
 
+static ctk_rtti_t node_return_rtti = {
+    .super = &node_stmt_rtti,
+    .name = "node-return",
+    .attrs = CTK_RTTI_ATTR_LIST(
+        CTK_RTTI_ATTR(node_return_t, expr, CTK_TYPE_RTTI)
+    )
+};
+
 /* Would be in file.h */
 CTK_RTTI_DECL(node, base)
 CTK_RTTI_DECL(node, expr)
 CTK_RTTI_DECL(node, stmt)
 CTK_RTTI_DECL(node, intlit)
 CTK_RTTI_DECL(node, list)
+CTK_RTTI_DECL(node, return)
 
 static void base_init(node_base_t *base, ctk_rtti_t *meta) {
     base->meta = meta;
@@ -75,6 +89,10 @@ static void base_init(node_base_t *base, ctk_rtti_t *meta) {
 static void expr_init(node_expr_t *expr, ctk_rtti_t *meta) {
     base_init(&expr->base, meta);
     expr->type = NULL;
+}
+
+static void stmt_init(node_stmt_t *stmt, ctk_rtti_t *meta) {
+    base_init(&stmt->base, meta);
 }
 
 static node_intlit_t *intlit_new(int64_t lit) {
@@ -95,12 +113,22 @@ static node_list_t *list_new(ctk_list_t *entries) {
     return node;
 }
 
+static node_return_t *return_new(node_expr_t *expr) {
+    node_return_t *node = node_return_xalloc();
+
+    stmt_init(&node->stmt, &node_return_rtti);
+    node->expr = expr;
+
+    return node;
+}
+
 /* Would be in file.c */
 CTK_RTTI_DEFN(node, base)
 CTK_RTTI_DEFN(node, expr)
 CTK_RTTI_DEFN(node, stmt)
 CTK_RTTI_DEFN(node, intlit)
 CTK_RTTI_DEFN(node, list)
+CTK_RTTI_DEFN(node, return)
 
 int main(void) {
     node_intlit_t *intlit = intlit_new(42);
@@ -121,14 +149,15 @@ int main(void) {
     ctk_list_t entries;
     ctk_list_init(&entries, 2);
 
-    for (size_t i = 0; i < 64; i++) {
+    for (size_t i = 0; i < 4; i++) {
         node_intlit_t *intlit = intlit_new(1LL << i);
         ctk_list_add(&entries, intlit);
     }
 
     node_list_t *list = list_new(&entries);
+    node_return_t *ret = return_new(node_expr_dyncast(list));
 
-    ctk_rtti_write(list, 0, stderr);
+    ctk_rtti_write(ret, 0, stderr);
     fprintf(stderr, "\n");
 
     ctk_rtti_delete(list);
