@@ -108,7 +108,7 @@ static node_list_t *list_new(ctk_list_t *entries) {
     node_list_t *node = node_list_xalloc();
 
     expr_init(&node->expr, &node_list_rtti);
-    node->entries = ctk_list_move_raw(entries);
+    node->entries = ctk_list_move(entries);
 
     return node;
 }

@@ -1,31 +1,26 @@
 #include "ctk/list.h"
 #include "ctk/allocator.h"
+#include <assert.h>
 
 void ctk_list_init(ctk_list_t *list, size_t initcap) {
-    list->cap = initcap;
-    list->data = ctk_xmalloc(list->cap * sizeof(void *));
-    list->size = 0;
+    ctk_dynarr_init(list, initcap * sizeof(void *));
 }
 
 void ctk_list_destruct(ctk_list_t *list) {
-    ctk_free(&list->data);
+    ctk_dynarr_destruct(list);
 }
 
 void ctk_list_add(ctk_list_t *list, void *entry) {
-    if (list->size + 1 > list->cap) {
-        list->cap *= 2;
-        ctk_xrealloc(&list->data, list->cap * sizeof(void *));
-    }
-
-    list->data[list->size] = entry;
-    list->size++;
+    void **p = ctk_dynarr_add(list, sizeof(void *));
+    assert((uintptr_t)p % sizeof(void *) == 0);
+    *p = entry;
 }
 
-void **ctk_list_move_raw(ctk_list_t *list) {
-    ctk_list_add(list, NULL);
+size_t ctk_list_size(ctk_list_t *list) {
+    return list->size / sizeof(void *);
+}
 
-    void **data = list->data;
-    list->data = NULL;
-    
-    return data;
+void **ctk_list_move(ctk_list_t *list) {
+    ctk_list_add(list, NULL);
+    return ctk_dynarr_move(list);
 }
