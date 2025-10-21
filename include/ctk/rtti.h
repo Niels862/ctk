@@ -6,6 +6,7 @@
 #include "ctk/token.h"
 #include <stdio.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdbool.h>
 
 #ifndef CTK_RTTI_MAX_ATTRS
