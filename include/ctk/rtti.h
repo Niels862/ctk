@@ -35,11 +35,14 @@ typedef struct {
 
 #define CTK_RTTI_ATTR_LIST(...) { __VA_ARGS__, { 0 } }
 
+typedef uint32_t ctk_rtti_id_t;
+
 typedef struct ctk_rtti_t ctk_rtti_t;
 
 struct ctk_rtti_t {
     ctk_rtti_t *super;
     ctk_zstr_t name;
+    ctk_rtti_id_t id;
     ctk_rtti_attr_t attrs[CTK_RTTI_MAX_ATTRS];
 };
 
