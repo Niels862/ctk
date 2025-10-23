@@ -117,8 +117,25 @@ void *ctk_linmap_delete(ctk_linmap_t *map, void *key) {
     return val;
 }
 
-void ctk_linmap_iter_init(ctk_linmap_iter_t *iter, ctk_linmap_t *map);
+static void ctk_linmap_iter_load(ctk_linmap_iter_t *iter) {
+    if (!ctk_linmap_iter_at_end(iter)) {
+        iter->entry = *ctk_linmap_get_entry(iter->map, iter->i);
+    }
+}
 
-void ctk_linmap_iter_next(ctk_linmap_iter_t *iter);
+void ctk_linmap_iter_init(ctk_linmap_iter_t *iter, ctk_linmap_t *map) {
+    iter->map = map;
+    iter->i = 0;
+    ctk_linmap_iter_load(iter);
+}
 
-bool ctk_linmap_iter_at_end(ctk_linmap_iter_t *iter);
+void ctk_linmap_iter_next(ctk_linmap_iter_t *iter) {
+    assert(!ctk_linmap_iter_at_end(iter));
+
+    iter->i++;
+    ctk_linmap_iter_load(iter);
+}
+
+bool ctk_linmap_iter_at_end(ctk_linmap_iter_t *iter) {
+    return iter->i == ctk_linmap_size(iter->map);
+}

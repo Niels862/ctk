@@ -31,6 +31,20 @@ int main() {
                (char *)pairs[i].p1, (char *)val, (char *)pairs[i].p2);
     }
 
+    ctk_linmap_iter_t iter;
+    ctk_linmap_iter_init(&iter, &map);
+
+    while (!ctk_linmap_iter_at_end(&iter)) {
+        printf("(%s, %s)\n", (char *)iter.entry.key, (char *)iter.entry.val);
+        ctk_linmap_iter_next(&iter);
+    }
+
+    while (ctk_linmap_size(&map)) {
+        ctk_map_entry_t entry;
+        ctk_linmap_pop(&map, &entry);
+        printf("Popped %s.\n", (char *)entry.key);
+    }
+
     ctk_linmap_destruct(&map);
 
     return 0;
