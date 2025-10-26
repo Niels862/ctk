@@ -61,6 +61,7 @@ void *ctk_pool_alloc_aligned(ctk_pool_t *pool, size_t size, size_t align) {
         goto fresh;
     }
 
+    pool->block->used += aligner + size;
     return pool->block->payload + at;
 
 fresh:
