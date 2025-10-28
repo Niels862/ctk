@@ -24,6 +24,26 @@ void ctk_token_short_write(ctk_token_t *tok, FILE *file) {
     ctk_strspan_write_repr(&tok->lexeme, file);
 }
 
+ctk_token_t *ctk_line_find_start(ctk_token_t *tok) {
+    int line = tok->pos.line;
+
+    while (tok->kind != CTK_TOKEN_STARTSOURCE && tok->pos.line == line) {
+        tok--;
+    }
+
+    return tok;
+}
+
+ctk_token_t *ctk_line_find_end(ctk_token_t *tok) {
+    int line = tok->pos.line;
+
+    while (tok->kind != CTK_TOKEN_ENDSOURCE && tok->pos.line == line) {
+        tok++;
+    }
+
+    return tok;
+}
+
 void ctk_line_context_write(ctk_span_t *line, ctk_span_t *highlight, 
                             FILE *file) {
     (void)highlight;

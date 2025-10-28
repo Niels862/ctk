@@ -1,11 +1,12 @@
 #include "ctk/lexer.h"
+#include "ctk/token-list.h"
 #include <ctype.h>
 
 #define TOKENLIST_OTHER(X) \
     X(NONE,         "none"), \
     X(IDENTIFIER,   "identifier"), \
     X(INTEGER,      "integer"), \
-    X(ENDOFSOURCE,  "end-of-source"), \
+    X(ENDFILE,  "end-of-source"), \
     X(UNRECOGNIZED, "unrecognized")
 
 #define TOKENLIST_KEYWORDS(X) \
@@ -54,9 +55,16 @@ static bool iswhitespace(uint32_t c) {
     return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 }
 
-static void lex(ctk_lexer_t *lexer) {
-    ctk_token_t tok;
+static void emit(ctk_lexer_t *lexer, ctk_tokenlist_t *toks, int kind) {
+    static ctk_token_t tok;
+    ctk_lexer_emit(lexer, &tok, kind);
+    ctk_tokenlist_add(toks, &tok);
+}
+
+static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
     uint32_t *c = &lexer->curr;
+
+    emit(lexer, toks, CTK_TOKEN_STARTSOURCE);
 
     while (!ctk_lexer_at_eof(lexer)) {
         if (isalpha(*c) || *c == '_') {
@@ -65,13 +73,13 @@ static void lex(ctk_lexer_t *lexer) {
             } while (isalnum(*c));
 
             tokenkind_t kind = ctk_lexer_lookup(lexer, keywords);
-            ctk_lexer_emit(lexer, &tok, kind == NONE ? IDENTIFIER : kind);
+            emit(lexer, toks, kind == NONE ? IDENTIFIER : kind);
         } else if (isdigit(*c)) {
             do {
                 ctk_lexer_advance(lexer);
             } while (isdigit(*c));
 
-            ctk_lexer_emit(lexer, &tok, IDENTIFIER);
+            emit(lexer, toks, IDENTIFIER);
         } else if (isoperator(*c)) {
             ctk_lexer_state_t state;
             tokenkind_t kind = UNRECOGNIZED;
@@ -90,7 +98,7 @@ static void lex(ctk_lexer_t *lexer) {
                 ctk_lexer_restore_state(lexer, &state);
             }
             
-            ctk_lexer_emit(lexer, &tok, kind);
+            emit(lexer, toks, kind);
         } else if (iswhitespace(*c)) {
             do {
                 ctk_lexer_advance(lexer);
@@ -100,21 +108,21 @@ static void lex(ctk_lexer_t *lexer) {
             continue;
         } else {
             ctk_lexer_advance(lexer);
-            ctk_lexer_emit(lexer, &tok, UNRECOGNIZED);
+            emit(lexer, toks, UNRECOGNIZED);
         }
-
-        ctk_token_write(&tok, stderr);
-        fprintf(stderr, "\n");
     }
 
-    ctk_lexer_emit(lexer, &tok, ENDOFSOURCE);
+    emit(lexer, toks, ENDFILE);
+    emit(lexer, toks, CTK_TOKEN_ENDSOURCE);
 
-    ctk_token_write(&tok, stderr);
-    fprintf(stderr, "\n");
+    ctk_tokenlist_finalize(toks);
 }
 
 int main(void) {
-    char *text = "abc 123 for +$-->> > a12\n while1 a1\n";
+    char *text = 
+    "abc 123 for +$-->> > a12\n"
+    "  while1 a1\n"
+    "a b c\n";
 
     ctk_textsrc_t src;
     ctk_textsrc_init_text(&src, "<test>", text);
@@ -124,7 +132,32 @@ int main(void) {
 
     ctk_tokenkind_set_name_table(names);
 
-    lex(&lexer);
+    ctk_tokenlist_t toks;
+    ctk_tokenlist_init(&toks);
+
+    lex(&lexer, &toks);
+
+    for (size_t i = 0; i < toks.size; i++) {
+        ctk_token_write(&toks.data[i], stderr);
+        fprintf(stderr, "\n");
+    }
+
+    fprintf(stderr, "\n");
+
+    for (size_t i = 0; i < toks.size; i++) {
+        ctk_token_t *tok = &toks.data[i];
+
+        ctk_span_t line;
+        ctk_span_init(&line, 
+                      ctk_line_find_start(tok), 
+                      ctk_line_find_end(tok));
+
+        ctk_span_t highlight;
+        ctk_span_init(&highlight, tok, tok + 1);
+
+        ctk_line_context_write(&line, &highlight, stderr);
+        fprintf(stderr, "\n\n");
+    }
 
     ctk_textsrc_destruct(&src);
 

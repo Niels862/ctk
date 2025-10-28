@@ -29,6 +29,10 @@ void ctk_token_write_with_names(ctk_token_t *tok, char *names[], FILE *file);
 
 void ctk_token_short_write(ctk_token_t *tok, FILE *file);
 
+ctk_token_t *ctk_line_find_start(ctk_token_t *tok);
+
+ctk_token_t *ctk_line_find_end(ctk_token_t *tok);
+
 void ctk_line_context_write(ctk_span_t *line, ctk_span_t *highlight, 
                             FILE *file);
 
