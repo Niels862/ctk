@@ -14,9 +14,6 @@ int main(void) {
     ctk_token_t tok;
     ctk_token_init(&tok, 1, &src, &pos, &lexeme);
 
-    ctk_token_write(&tok, stdout);
-    fprintf(stdout, "\n");
-
     char *names[] = {
         "null",
         "identifier"

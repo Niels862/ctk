@@ -12,19 +12,9 @@ void ctk_token_init(ctk_token_t *tok, int kind, ctk_textsrc_t *src,
 }
 
 void ctk_token_write(ctk_token_t *tok, FILE *file) {
-    ctk_token_write_with_names(tok, ctk_token_names, file);
-}
-
-void ctk_token_write_with_names(ctk_token_t *tok, char *names[], FILE *file) {
     fprintf(file, "%s:%d:%d: ", 
             tok->src->name, tok->pos.line, tok->pos.col);
-    
-    if (names == NULL) {
-        fprintf(file, "<%d> ", tok->kind);
-    } else {
-        fprintf(file, "<%s> ", names[tok->kind]);
-    }
-
+    fprintf(file, "<%s> ", ctk_tokenkind_get_name(tok->kind));
     ctk_strspan_write_repr(&tok->lexeme, file);
 }
 
@@ -48,5 +38,18 @@ void ctk_tokenkind_set_name_table(char *names[]) {
 }
 
 char *ctk_tokenkind_get_name(int kind) {
+    if (kind & 0x100) {
+        switch (kind & 0xFF) {
+            case CTK_TOKEN_STARTSOURCE:     
+                return "STARTSOURCE";
+
+            case CTK_TOKEN_ENDSOURCE:       
+                return "ENDSOURCE";
+
+            default:
+                return "";
+        }
+    }
+
     return ctk_token_names[kind];
 }

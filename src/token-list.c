@@ -32,7 +32,7 @@ void ctk_tokenlist_finalize(ctk_tokenlist_t *toks) {
 
     for (size_t i = 1; i < toks->size - 1; i++) {
         (void)i;
-        assert(toks->data[i].kind >= CTK_TOKEN_USER_START);
+        assert(toks->data[i].kind > 0 && toks->data[i].kind < 0x100);
     }
 
     toks->locked = true;

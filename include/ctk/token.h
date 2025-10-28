@@ -7,6 +7,12 @@
 #include "ctk/span.h"
 #include <stdio.h>
 
+typedef enum {
+    CTK_TOKEN_NONE              = 0,
+    CTK_TOKEN_STARTSOURCE       = 0x100 | 0,
+    CTK_TOKEN_ENDSOURCE         = 0x100 | 1,
+} ctk_builtin_tokenkind_t;
+
 typedef struct {
     int kind;
     ctk_textsrc_t *src;
