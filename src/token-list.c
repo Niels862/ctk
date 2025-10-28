@@ -9,8 +9,6 @@ void ctk_tokenlist_init(ctk_tokenlist_t *toks) {
     toks->size = 0;
     toks->data = ctk_xmalloc(toks->cap * sizeof(ctk_token_t));
     toks->locked = false;
-
-    ctk_tokenlist_add(toks, CTK_TOKEN_STARTSOURCE);
 }
 
 void ctk_tokenlist_destruct(ctk_tokenlist_t *toks) {
@@ -18,8 +16,6 @@ void ctk_tokenlist_destruct(ctk_tokenlist_t *toks) {
 }
 
 void ctk_tokenlist_add(ctk_tokenlist_t *toks, ctk_token_t *tok) {
-    assert(!toks->locked);
-
     if (toks->size + 1 >= toks->cap) {
         toks->cap *= 2;
         ctk_xrealloc(&toks->data, toks->cap * sizeof(ctk_token_t));
@@ -30,7 +26,15 @@ void ctk_tokenlist_add(ctk_tokenlist_t *toks, ctk_token_t *tok) {
 }
 
 void ctk_tokenlist_finalize(ctk_tokenlist_t *toks) {
-    ctk_tokenlist_add(toks, CTK_TOKEN_ENDSOURCE);
+    assert(toks->size >= 2);
+    assert(toks->data[0].kind == CTK_TOKEN_STARTSOURCE);
+    assert(toks->data[toks->size - 1].kind == CTK_TOKEN_ENDSOURCE);
+
+    for (size_t i = 1; i < toks->size - 1; i++) {
+        (void)i;
+        assert(toks->data[i].kind >= CTK_TOKEN_USER_START);
+    }
+
     toks->locked = true;
 }
 
