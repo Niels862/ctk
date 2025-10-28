@@ -5,6 +5,14 @@
 #include "span.h"
 #include <stdbool.h>
 
+typedef enum {
+    CTK_TOKEN_NONE,
+    CTK_TOKEN_STARTSOURCE,
+    CTK_TOKEN_ENDSOURCE,
+} ctk_builtin_tokenkind_t;
+
+#define CTK_TOKEN_USER_START    = CTK_TOKEN_ENDSOURCE + 1;
+
 typedef struct {
     size_t size;
     size_t cap;
@@ -18,7 +26,7 @@ void ctk_tokenlist_destruct(ctk_tokenlist_t *toks);
 
 void ctk_tokenlist_add(ctk_tokenlist_t *toks, ctk_token_t *tok);
 
-void ctk_tokenlist_lock(ctk_tokenlist_t *toks);
+void ctk_tokenlist_finalize(ctk_tokenlist_t *toks);
 
 void ctk_tokenlist_to_span(ctk_tokenlist_t *toks, ctk_span_t *span);
 

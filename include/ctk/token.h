@@ -4,6 +4,7 @@
 #include "ctk/text-position.h"
 #include "ctk/text-source.h"
 #include "ctk/string-span.h"
+#include "ctk/span.h"
 #include <stdio.h>
 
 typedef struct {
@@ -21,6 +22,9 @@ void ctk_token_write(ctk_token_t *tok, FILE *file);
 void ctk_token_write_with_names(ctk_token_t *tok, char *names[], FILE *file);
 
 void ctk_token_short_write(ctk_token_t *tok, FILE *file);
+
+void ctk_line_context_write(ctk_span_t *line, ctk_span_t *highlight, 
+                            FILE *file);
 
 void ctk_tokenkind_set_name_table(char **names);
 

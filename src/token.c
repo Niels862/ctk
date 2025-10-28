@@ -1,4 +1,5 @@
 #include "ctk/token.h"
+#include "ctk/string-utils.h"
 
 static char **ctk_token_names = NULL;
 
@@ -31,6 +32,15 @@ void ctk_token_short_write(ctk_token_t *tok, FILE *file) {
     fprintf(file, "%s:%d:%d: ", 
             tok->src->name, tok->pos.line, tok->pos.col);
     ctk_strspan_write_repr(&tok->lexeme, file);
+}
+
+void ctk_line_context_write(ctk_span_t *line, ctk_span_t *highlight, 
+                            FILE *file) {
+    (void)highlight;
+
+    for (ctk_token_t *tok = line->start; tok != line->end; tok++) {
+        ctk_str_write(tok->lexeme.start, tok->lexeme.end, file);
+    }
 }
 
 void ctk_tokenkind_set_name_table(char *names[]) {
