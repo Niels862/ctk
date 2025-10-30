@@ -11,6 +11,7 @@
 
 #define TOKENLIST_KEYWORDS(X) \
     X(IF,           "if"), \
+    X(THEN,         "then"), \
     X(WHILE,        "while"), \
     X(FOR,          "for") \
 
@@ -47,40 +48,52 @@ static ctk_fixed_lexeme_t operators[] = {
     { 0 },
 };
 
-static bool isoperator(uint32_t c) {
-    return c == '+' || c == '-' || c == '>';
-}
-
-static bool iswhitespace(uint32_t c) {
-    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
-}
-
 static void emit(ctk_lexer_t *lexer, ctk_tokenlist_t *toks, int kind) {
     static ctk_token_t tok;
     ctk_lexer_emit(lexer, &tok, kind);
     ctk_tokenlist_add(toks, &tok);
 }
 
-static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
-    uint32_t *c = &lexer->curr;
+static bool is_id_start(uint32_t c) {
+    return c < 256 && (isalpha(c) || c == '_');
+}
 
+static bool is_id_continue(uint32_t c) {
+    return c < 256 && (isalnum(c) || c == '_');
+}
+
+static bool is_number(uint32_t c) {
+    return c < 256 && isdigit(c);
+}
+
+static bool is_operator(uint32_t c) {
+    return c == '+' || c == '-' || c == '>';
+}
+
+static bool is_whitespace(uint32_t c) {
+    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+}
+
+static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
     emit(lexer, toks, CTK_TOKEN_STARTSOURCE);
 
     while (!ctk_lexer_at_eof(lexer)) {
-        if (isalpha(*c) || *c == '_') {
+        fprintf(stderr, "%p\n", (void *)&lexer->curr);
+
+        if (is_id_start(lexer->curr)) {
             do {
                 ctk_lexer_advance(lexer);
-            } while (isalnum(*c));
+            } while (is_id_continue(lexer->curr));
 
             tokenkind_t kind = ctk_lexer_lookup(lexer, keywords);
             emit(lexer, toks, kind == NONE ? IDENTIFIER : kind);
-        } else if (isdigit(*c)) {
+        } else if (is_number(lexer->curr)) {
             do {
                 ctk_lexer_advance(lexer);
-            } while (isdigit(*c));
+            } while (is_number(lexer->curr));
 
             emit(lexer, toks, IDENTIFIER);
-        } else if (isoperator(*c)) {
+        } else if (is_operator(lexer->curr)) {
             ctk_lexer_state_t state;
             tokenkind_t kind = UNRECOGNIZED;
 
@@ -92,17 +105,17 @@ static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
                     ctk_lexer_save_state(lexer, &state);
                     kind = lkind;
                 }
-            } while (isoperator(*c));
+            } while (is_operator(lexer->curr));
 
             if (kind != UNRECOGNIZED) {
                 ctk_lexer_restore_state(lexer, &state);
             }
             
             emit(lexer, toks, kind);
-        } else if (iswhitespace(*c)) {
+        } else if (is_whitespace(lexer->curr)) {
             do {
                 ctk_lexer_advance(lexer);
-            } while (iswhitespace(*c));
+            } while (is_whitespace(lexer->curr));
 
             ctk_lexer_discard(lexer);
             continue;
@@ -120,9 +133,10 @@ static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
 
 int main(void) {
     char *text = 
-    "abc 123 for +$-->> > a12\n"
-    "  while1 a1\n"
-    "a b c\n";
+    "if 1 + 1 then"
+    "  open\n"
+    "else while x\n"
+    "  return 1";
 
     ctk_textsrc_t src;
     ctk_textsrc_init_text(&src, "<test>", text);
