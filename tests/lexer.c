@@ -1,5 +1,6 @@
 #include "ctk/lexer.h"
 #include "ctk/token-list.h"
+#include "ctk/text-context-writer.h"
 #include <ctype.h>
 
 #define TOKENLIST_OTHER(X) \
@@ -78,8 +79,6 @@ static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
     emit(lexer, toks, CTK_TOKEN_STARTSOURCE);
 
     while (!ctk_lexer_at_eof(lexer)) {
-        fprintf(stderr, "%p\n", (void *)&lexer->curr);
-
         if (is_id_start(lexer->curr)) {
             do {
                 ctk_lexer_advance(lexer);
@@ -165,9 +164,18 @@ int main(void) {
 
     fprintf(stderr, "\n");
 
+    ctk_textctx_style_t style = {
+        .focus  = CTK_ANSI_FG_RED,
+        .useansi = true,
+    };
+
     for (size_t i = 0; i < toks.size; i++) {
-        ctk_token_t *tok = &toks.data[i];
-        (void)tok;
+        ctk_textctx_writer_t writer = {
+            .style = &style,
+            .focus = &toks.data[i],
+        };
+        
+        ctk_textctk_write(&writer);
     }
 
     ctk_textsrc_destruct(&src);

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdint.h>
 
 void ctk_strspan_init(ctk_strspan_t *span, char *start, char *end) {
     span->start = start;
@@ -13,7 +14,7 @@ void ctk_strspan_init_from_string(ctk_strspan_t *span, char *zs) {
     span->end = zs + strlen(zs);
 }
 
-static void ctk_char_write_repr(char c, FILE *file) {
+static void ctk_char_write_repr(uint8_t c, FILE *file) {
     if (isprint(c) && c != '\t') {
         fprintf(file, "%c", c);
     } else {
@@ -29,10 +30,10 @@ static void ctk_char_write_repr(char c, FILE *file) {
         }
 
         if (seq == NULL) {
-            if (c < 10) {
+            if (c == 0) {
                 fprintf(file, "\\%d", c);
             } else {
-                fprintf(file, "\\%02X", c);
+                fprintf(file, "\\x%02X", c);
             }
         } else {
             fputs(seq, file);

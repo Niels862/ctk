@@ -8,14 +8,20 @@ void ctk_textsrc_init_text(ctk_textsrc_t *ts, ctk_zstr_t name,
 
     size_t size = strlen(text);
     ctk_strbuf_init(&ts->text, size);
+
+    ctk_strbuf_concat_str(&ts->text, "\n", 1);
     ctk_strbuf_concat_str(&ts->text, text, size);
+    ctk_strbuf_concat_str(&ts->text, "\n", 1);
 }
 
 void ctk_textsrc_init_file(ctk_textsrc_t *ts, ctk_zstr_t name, FILE *file) {
     ts->name = name;
 
     ctk_strbuf_init(&ts->text, 256);
+
+    ctk_strbuf_concat_str(&ts->text, "\n", 1);
     ctk_strbuf_concat_file(&ts->text, file);
+    ctk_strbuf_concat_str(&ts->text, "\n", 1);
 }
 
 void ctk_textsrc_destruct(ctk_textsrc_t *ts) {

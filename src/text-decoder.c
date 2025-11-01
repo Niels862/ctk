@@ -7,5 +7,7 @@ uint32_t ctk_decode_raw(ctk_strbuf_t *sb, size_t idx, uint32_t *size) {
     }
 
     *size = 1;
-    return sb->data[idx];
+    uint8_t c = sb->data[idx];
+
+    return c;
 }

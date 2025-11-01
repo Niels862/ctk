@@ -4,7 +4,8 @@
 
 static void ctk_lexer_state_init(ctk_lexer_state_t *state) {
     ctk_textpos_init(&state->pos);
-    state->idx = 0;
+    // Implicitly skip the synthetic newline inserted by source init
+    state->idx = 1; 
 }
 
 static void ctk_lexer_read_codepoint(ctk_lexer_t *lexer) {
@@ -21,6 +22,9 @@ void ctk_lexer_init(ctk_lexer_t *lexer, ctk_textsrc_t *src,
     lexer->decoder = decoder;
 
     ctk_lexer_read_codepoint(lexer);
+
+    assert(lexer->src->text.data[0] == '\n');
+    assert(lexer->src->text.data[lexer->src->text.size - 1] == '\n');
 }
 
 void ctk_lexer_advance(ctk_lexer_t *lexer) {

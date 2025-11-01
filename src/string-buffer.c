@@ -25,8 +25,8 @@ void ctk_strbuf_destruct(ctk_strbuf_t *sb) {
     ctk_xfree(&sb->data);
 }
 
-void ctk_strbuf_concat_str(ctk_strbuf_t *sb, char *s, size_t len) {
-    if (sb->size + len < sb->cap) {
+void ctk_strbuf_concat_str(ctk_strbuf_t *sb, char *s, size_t len) {    
+    if (sb->size + len >= sb->cap) {
         ctk_strbuf_realloc(sb, sb->size + len);
     }
 
