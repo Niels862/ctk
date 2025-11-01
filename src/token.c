@@ -24,35 +24,6 @@ void ctk_token_short_write(ctk_token_t *tok, FILE *file) {
     ctk_strspan_write_repr(&tok->lexeme, file);
 }
 
-ctk_token_t *ctk_line_find_start(ctk_token_t *tok) {
-    int line = tok->pos.line;
-
-    while (tok->kind != CTK_TOKEN_STARTSOURCE && tok->pos.line == line) {
-        tok--;
-    }
-
-    return tok;
-}
-
-ctk_token_t *ctk_line_find_end(ctk_token_t *tok) {
-    int line = tok->pos.line;
-
-    while (tok->kind != CTK_TOKEN_ENDSOURCE && tok->pos.line == line) {
-        tok++;
-    }
-
-    return tok;
-}
-
-void ctk_line_context_write(ctk_span_t *line, ctk_span_t *highlight, 
-                            FILE *file) {
-    (void)highlight;
-
-    for (ctk_token_t *tok = line->start; tok != line->end; tok++) {
-        ctk_str_write(tok->lexeme.start, tok->lexeme.end, file);
-    }
-}
-
 void ctk_tokenkind_set_name_table(char *names[]) {
     ctk_token_names = names;
 }

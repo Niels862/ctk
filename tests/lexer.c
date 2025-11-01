@@ -119,6 +119,13 @@ static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
 
             ctk_lexer_discard(lexer);
             continue;
+        } else if (lexer->curr == '#') {
+            do {
+                ctk_lexer_advance(lexer);
+            } while (lexer->curr != '\n');
+
+            ctk_lexer_discard(lexer);
+            continue;
         } else {
             ctk_lexer_advance(lexer);
             emit(lexer, toks, UNRECOGNIZED);
@@ -133,7 +140,7 @@ static void lex(ctk_lexer_t *lexer, ctk_tokenlist_t *toks) {
 
 int main(void) {
     char *text = 
-    "if 1 + 1 then"
+    "if 1 + 1 then  # comment\n"
     "  open\n"
     "else while x\n"
     "  return 1";
@@ -160,17 +167,7 @@ int main(void) {
 
     for (size_t i = 0; i < toks.size; i++) {
         ctk_token_t *tok = &toks.data[i];
-
-        ctk_span_t line;
-        ctk_span_init(&line, 
-                      ctk_line_find_start(tok), 
-                      ctk_line_find_end(tok));
-
-        ctk_span_t highlight;
-        ctk_span_init(&highlight, tok, tok + 1);
-
-        ctk_line_context_write(&line, &highlight, stderr);
-        fprintf(stderr, "\n\n");
+        (void)tok;
     }
 
     ctk_textsrc_destruct(&src);
