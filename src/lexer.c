@@ -2,6 +2,9 @@
 #include <string.h>
 #include <assert.h>
 
+// Should not be tested, use at_eof instead.
+#define CTK_LEXER_EOF 0xFFFFFFFF
+
 static void ctk_lexer_state_init(ctk_lexer_state_t *state) {
     ctk_textpos_init(&state->pos);
     // Implicitly skip the synthetic newline inserted by source init
@@ -9,9 +12,13 @@ static void ctk_lexer_state_init(ctk_lexer_state_t *state) {
 }
 
 static void ctk_lexer_read_codepoint(ctk_lexer_t *lexer) {
-    lexer->curr = lexer->decoder(&lexer->src->text, 
-                                 lexer->currstate.idx, 
-                                 &lexer->currsize);
+    if (ctk_lexer_at_eof(lexer)) {
+        lexer->curr = CTK_LEXER_EOF;
+    } else {
+        lexer->curr = lexer->decoder(&lexer->src->text, 
+                                     lexer->currstate.idx, 
+                                     &lexer->currsize);
+    }
 }
 
 void ctk_lexer_init(ctk_lexer_t *lexer, ctk_textsrc_t *src, 
