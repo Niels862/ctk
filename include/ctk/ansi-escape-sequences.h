@@ -3,26 +3,22 @@
 
 typedef char const *ctk_ansi_esc_t;
 
-#define CTK_ANSI_ESCAPE(e)  "\033[" e "m"
+#define CTK_ANSI_ESCAPE(e)      ("\033[" e "m")
 
-#define CTK_ANSI_RESET      CTK_ANSI_ESCAPE("0")
+#define CTK_ANSI_RESET          CTK_ANSI_ESCAPE("0")
 
-#define CTK_ANSI_FG_BLACK   CTK_ANSI_ESCAPE("30")
-#define CTK_ANSI_FG_RED     CTK_ANSI_ESCAPE("31")
-#define CTK_ANSI_FG_GREEN   CTK_ANSI_ESCAPE("32")
-#define CTK_ANSI_FG_YELLOW  CTK_ANSI_ESCAPE("33")
-#define CTK_ANSI_FG_BLUE    CTK_ANSI_ESCAPE("34")
-#define CTK_ANSI_FG_MAGENTA CTK_ANSI_ESCAPE("35")
-#define CTK_ANSI_FG_CYAN    CTK_ANSI_ESCAPE("36")
-#define CTK_ANSI_FG_WHITE   CTK_ANSI_ESCAPE("37")
+#define CTK_ANSI_BLACK          "0"
+#define CTK_ANSI_RED            "1"
+#define CTK_ANSI_GREEN          "2"
+#define CTK_ANSI_YELLOW         "3"
+#define CTK_ANSI_BLUE           "4"
+#define CTK_ANSI_MAGENTA        "5"
+#define CTK_ANSI_CYAN           "6"
+#define CTK_ANSI_WHITE          "7"
 
-#define CTK_ANSI_BG_BLACK   CTK_ANSI_ESCAPE("40")
-#define CTK_ANSI_BG_RED     CTK_ANSI_ESCAPE("41")
-#define CTK_ANSI_BG_GREEN   CTK_ANSI_ESCAPE("42")
-#define CTK_ANSI_BG_YELLOW  CTK_ANSI_ESCAPE("43")
-#define CTK_ANSI_BG_BLUE    CTK_ANSI_ESCAPE("44")
-#define CTK_ANSI_BG_MAGENTA CTK_ANSI_ESCAPE("45")
-#define CTK_ANSI_BG_CYAN    CTK_ANSI_ESCAPE("46")
-#define CTK_ANSI_BG_WHITE   CTK_ANSI_ESCAPE("47")
+#define CTK_ANSI_FG_DARK(c)     CTK_ANSI_ESCAPE("3" c)
+#define CTK_ANSI_FG_BRIGHT(c)   CTK_ANSI_ESCAPE("9" c)
+#define CTK_ANSI_BG_DARK(c)     CTK_ANSI_ESCAPE("4" c)
+#define CTK_ANSI_BG_BRIGHT(c)   CTK_ANSI_ESCAPE("10" c)
 
 #endif

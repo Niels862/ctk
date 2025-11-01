@@ -7,7 +7,15 @@
 
 typedef struct {
     bool useansi;
+    bool usemarker;
+
+    char markstart;
+    char markinter;
+    char markend;
+
+    
     ctk_ansi_esc_t focus;
+    ctk_ansi_esc_t marker;
 } ctk_textctx_style_t;
 
 typedef struct {

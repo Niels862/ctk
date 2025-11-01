@@ -165,8 +165,15 @@ int main(void) {
     fprintf(stderr, "\n");
 
     ctk_textctx_style_t style = {
-        .focus  = CTK_ANSI_FG_RED,
-        .useansi = true,
+        .useansi    = true,
+        .usemarker  = true,
+        
+        .markstart  = '^',
+        .markinter  = '~',
+        .markend    = '~',
+
+        .focus      = CTK_ANSI_FG_BRIGHT(CTK_ANSI_RED),
+        .marker     = CTK_ANSI_FG_BRIGHT(CTK_ANSI_YELLOW),
     };
 
     for (size_t i = 0; i < toks.size; i++) {
@@ -174,10 +181,19 @@ int main(void) {
             .style = &style,
             .focus = &toks.data[i],
         };
-        
+    
+        style.useansi = true;
+        fprintf(stderr, "== ansi ==\n");
         ctk_textctk_write(&writer);
+
+        style.useansi = false;
+        fprintf(stderr, "== no ansi ==\n");
+        ctk_textctk_write(&writer);
+
+        fprintf(stderr, "\n");
     }
 
+    ctk_tokenlist_destruct(&toks);
     ctk_textsrc_destruct(&src);
 
     return 0;
