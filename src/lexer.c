@@ -38,8 +38,8 @@ void ctk_lexer_advance(ctk_lexer_t *lexer) {
 }
 
 bool ctk_lexer_at_eof(ctk_lexer_t *lexer) {
-    assert(lexer->currstate.idx <= lexer->src->text.size);
-    return lexer->currstate.idx >= lexer->src->text.size;
+    assert(lexer->currstate.idx <= lexer->src->text.size - 1);
+    return lexer->currstate.idx >= lexer->src->text.size - 1;
 }
 
 void ctk_lexer_emit(ctk_lexer_t *lexer, ctk_token_t *tok, int kind) {
@@ -82,35 +82,6 @@ int ctk_lexer_lookup(ctk_lexer_t *lexer,
         if (strncmp(span.start, lex->lexeme, len) == 0 
                 && lex->lexeme[len] == '\0') {
             match = lexs[i].kind;
-        }
-    }
-
-    return match;
-}
-
-int ctk_lexer_lookup_longest(ctk_lexer_t *lexer, 
-                                          ctk_fixed_lexeme_t lexs[]) {
-    ctk_strspan_t span;
-    ctk_lexer_to_span(lexer, &span);
-    
-    size_t len = span.end - span.start;
-
-    size_t longest = 0;
-    int match = 0;
-
-    for (size_t i = 0; lexs[i].kind != 0; i++) {
-        ctk_fixed_lexeme_t *lex = &lexs[i];
-
-        size_t matchsize = 0;
-        for (size_t j = 0; j < len && lex->lexeme[j] != '\0'; j++) {
-            if (span.start[j] == lex->lexeme[j]) {
-                matchsize++;
-            }
-        }
-
-        if (matchsize > longest) {
-            longest = matchsize;
-            match = lex->kind;
         }
     }
 

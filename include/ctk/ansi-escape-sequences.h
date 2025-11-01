@@ -3,7 +3,7 @@
 
 typedef char const *ctk_ansi_esc_t;
 
-#define CTK_ANSI_ESCAPE(e)      ("\033[" e "m")
+#define CTK_ANSI_ESCAPE(e)      "\033[" e "m"
 
 #define CTK_ANSI_RESET          CTK_ANSI_ESCAPE("0")
 

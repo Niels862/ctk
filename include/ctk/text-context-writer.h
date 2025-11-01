@@ -13,6 +13,7 @@ typedef struct {
     char markinter;
     char markend;
 
+    int linepad;
     
     ctk_ansi_esc_t focus;
     ctk_ansi_esc_t marker;

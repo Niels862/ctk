@@ -172,11 +172,13 @@ int main(void) {
         .markinter  = '~',
         .markend    = '~',
 
+        .linepad    = 5,
+
         .focus      = CTK_ANSI_FG_BRIGHT(CTK_ANSI_RED),
         .marker     = CTK_ANSI_FG_BRIGHT(CTK_ANSI_YELLOW),
     };
 
-    for (size_t i = 0; i < toks.size; i++) {
+    for (size_t i = 1; i < toks.size - 1; i++) {
         ctk_textctx_writer_t writer = {
             .style = &style,
             .focus = &toks.data[i],

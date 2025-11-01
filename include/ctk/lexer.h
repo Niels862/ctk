@@ -47,7 +47,4 @@ void ctk_lexer_restore_state(ctk_lexer_t *lexer, ctk_lexer_state_t *state);
 int ctk_lexer_lookup(ctk_lexer_t *lexer, 
                                   ctk_fixed_lexeme_t lexs[]);
 
-int ctk_lexer_lookup_longest(ctk_lexer_t *lexer, 
-                                          ctk_fixed_lexeme_t lexs[]);
-
 #endif
