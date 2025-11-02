@@ -6,9 +6,11 @@ static ctk_token_t ctk_invalid_token = {
     .kind = 0,
 };
 
-void ctk_parser_init(ctk_parser_t *parser, ctk_span_t *span) {
+void ctk_parser_init(ctk_parser_t *parser, ctk_span_t *span, 
+                     ctk_parser_expect_error_t expect_error) {
     parser->curr = span->start;
     parser->end = span->end;
+    parser->expect_error = expect_error;
 }
 
 bool ctk_parser_at_end(ctk_parser_t *parser) {
@@ -41,11 +43,7 @@ ctk_token_t *ctk_parser_expect(ctk_parser_t *parser, int kind) {
         return curr;
     }
 
-    /* FIXME: needs to write to a modular, user defined function. 
-       Needs to handle the end token with a different name and cannot 
-       use get_name. */
-    fprintf(stderr, "expected '%s', got '%s'\n", 
-            ctk_tokenkind_get_name(kind), ctk_tokenkind_get_name(curr->kind));
+    parser->expect_error(curr, kind);
     return NULL;
 }
 
