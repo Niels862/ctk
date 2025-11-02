@@ -24,6 +24,6 @@ typedef struct {
     ctk_token_t *focus;
 } ctk_textctx_writer_t;
 
-void ctk_textctk_write(ctk_textctx_writer_t *writer);
+void ctk_textctx_write(ctk_textctx_writer_t *writer);
 
 #endif

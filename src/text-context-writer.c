@@ -52,7 +52,7 @@ static void ctk_marker_write(ctk_textctx_style_t const *style,
     fprintf(stderr, "\n");
 }
 
-void ctk_textctk_write(ctk_textctx_writer_t *writer) {
+void ctk_textctx_write(ctk_textctx_writer_t *writer) {
     assert(writer->focus->kind != CTK_TOKEN_STARTSOURCE);
     assert(writer->focus->kind != CTK_TOKEN_ENDSOURCE);
 

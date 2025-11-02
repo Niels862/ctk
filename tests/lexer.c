@@ -186,11 +186,11 @@ int main(void) {
     
         style.useansi = true;
         fprintf(stderr, "== ansi ==\n");
-        ctk_textctk_write(&writer);
+        ctk_textctx_write(&writer);
 
         style.useansi = false;
         fprintf(stderr, "== no ansi ==\n");
-        ctk_textctk_write(&writer);
+        ctk_textctx_write(&writer);
 
         fprintf(stderr, "\n");
     }
