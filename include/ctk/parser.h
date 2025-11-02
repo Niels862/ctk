@@ -5,7 +5,8 @@
 #include "ctk/span.h"
 #include <stdbool.h>
 
-typedef void(*ctk_parser_expect_error_t)(ctk_token_t *got, int expected);
+typedef void(*ctk_parser_expect_error_t)(ctk_token_t *got, 
+                                         int expected, char const *msg);
 
 typedef struct {
     ctk_token_t *curr;
@@ -22,7 +23,8 @@ void ctk_parser_advance(ctk_parser_t *parser);
 
 ctk_token_t *ctk_parser_accept(ctk_parser_t *parser, int kind);
 
-ctk_token_t *ctk_parser_expect(ctk_parser_t *parser, int kind);
+ctk_token_t *ctk_parser_expect(ctk_parser_t *parser, 
+                               int kind, char const *msg);
 
 ctk_token_t *ctk_parser_curr(ctk_parser_t *parser);
 

@@ -35,7 +35,8 @@ ctk_token_t *ctk_parser_accept(ctk_parser_t *parser, int kind) {
     return NULL;
 }
 
-ctk_token_t *ctk_parser_expect(ctk_parser_t *parser, int kind) {
+ctk_token_t *ctk_parser_expect(ctk_parser_t *parser, 
+                               int kind, char const *msg) {
     ctk_token_t *curr = ctk_parser_curr(parser);
 
     if (curr->kind == kind) {
@@ -43,7 +44,7 @@ ctk_token_t *ctk_parser_expect(ctk_parser_t *parser, int kind) {
         return curr;
     }
 
-    parser->expect_error(curr, kind);
+    parser->expect_error(curr, kind, msg);
     return NULL;
 }
 
