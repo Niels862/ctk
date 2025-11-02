@@ -36,9 +36,7 @@ static void ctk_marker_write(ctk_textctx_style_t const *style,
     
     ctk_write_ansi_esc(style->marker, style->useansi);
 
-    if (len > 0) {
-        fputc(style->markstart, stderr);
-    }
+    fputc(style->markstart, stderr);
 
     if (len > 2) {
         ctk_chars_write(style->markinter, len - 2);
