@@ -105,17 +105,7 @@ static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr,
 
         case CTK_TYPE_RTTI_LIST: {
             void **list = ctk_get_pointer_attr(obj, attr->offset);
-            fprintf(file, "[\n");
-
-            for (size_t i = 0; list[i] != NULL; i++) {
-                ctk_n_spaces(depth + 2, file);
-                fprintf(file, "[%ld]: ", i);
-                ctk_rtti_write(list[i], depth + 2, file);
-                fprintf(file, "\n");
-            }
-
-            ctk_n_spaces(depth + 1, file);
-            fprintf(file, "]");
+            ctk_rtti_list_write(list, depth, file);
             break;
         }
 
@@ -145,7 +135,30 @@ static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr,
     }
 }
 
+void ctk_rtti_list_write(void **list, size_t depth, FILE *file) {
+    if (list == NULL) {
+        fprintf(stderr, "([null])");
+    }
+    
+    fprintf(file, "[\n");
+
+    for (size_t i = 0; list[i] != NULL; i++) {
+        ctk_n_spaces(depth + 2, file);
+        fprintf(file, "[%ld]: ", i);
+        ctk_rtti_write(list[i], depth + 2, file);
+        fprintf(file, "\n");
+    }
+
+    ctk_n_spaces(depth + 1, file);
+    fprintf(file, "]");
+}
+
 void ctk_rtti_write(void *obj, size_t depth, FILE *file) {
+    if (obj == NULL) {
+        fprintf(file, "(null)");
+        return;
+    }
+
     ctk_rtti_t *meta = CTK_RTTI_META(obj);
 
     fprintf(file, "%s", meta->name);

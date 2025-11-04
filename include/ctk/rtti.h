@@ -59,6 +59,8 @@ bool ctk_rtti_instanceof(void *obj, ctk_rtti_t *meta);
 
 void *ctk_rtti_dyncast(void *obj, ctk_rtti_t *meta);
 
+void ctk_rtti_list_write(void **list, size_t depth, FILE *file);
+
 void ctk_rtti_write(void *obj, size_t depth, FILE *file);
 
 #define CTK_RTTI_TYPENAME(pre, t) pre##_##t##_t
