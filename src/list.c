@@ -21,6 +21,10 @@ size_t ctk_list_size(ctk_list_t *list) {
 }
 
 void **ctk_list_move(ctk_list_t *list) {
+    if (list == NULL) {
+        return NULL;
+    }
+
     ctk_list_add(list, NULL);
     return ctk_dynarr_move(list);
 }
