@@ -138,6 +138,7 @@ static void ctk_rtti_attr_write(void *obj, ctk_rtti_attr_t *attr,
 void ctk_rtti_list_write(void **list, size_t depth, FILE *file) {
     if (list == NULL) {
         fprintf(stderr, "([null])");
+        return;
     }
     
     fprintf(file, "[\n");
