@@ -49,9 +49,6 @@ ctk_token_t *ctk_parser_expect(ctk_parser_t *parser,
 }
 
 ctk_token_t *ctk_parser_curr(ctk_parser_t *parser) {
-    if (ctk_parser_at_end(parser)) {
-        return &ctk_invalid_token;
-    }
     return parser->curr;
 }
 
